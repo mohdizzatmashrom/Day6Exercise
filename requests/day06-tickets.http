@@ -1,0 +1,45 @@
+### 1. Health Check
+# Expected: 200 OK
+GET http://localhost:8080/api/health
+
+### 2. About
+# Expected: 200 OK
+GET http://localhost:8080/api/about
+
+### 3. Get all tickets
+# Expected: 200 OK
+GET http://localhost:8080/api/tickets
+
+### 4. Get one existing ticket
+# Expected: 200 OK
+GET http://localhost:8080/api/tickets/T001
+
+### 5. Get one missing ticket
+# Expected: 404 Not Found
+GET http://localhost:8080/api/tickets/T999
+
+### 6. Create a valid ticket
+# Expected: 201 Created
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+
+{
+  "title": "VPN connection not working",
+  "description": "User cannot connect to company VPN from home.",
+  "category": "Network",
+  "priority": "MEDIUM",
+  "createdBy": "siti@example.com"
+}
+
+### 7. Create an invalid ticket (missing/blank required fields)
+# Expected: 400 Bad Request
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "",
+  "category": "",
+  "priority": "",
+  "createdBy": ""
+}
