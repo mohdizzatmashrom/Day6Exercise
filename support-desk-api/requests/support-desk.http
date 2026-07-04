@@ -1,5 +1,5 @@
-### Health check
+### Health Check
 GET http://localhost:8080/api/health
 
-### About the API
+### About
 GET http://localhost:8080/api/about
