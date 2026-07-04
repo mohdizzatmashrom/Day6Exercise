@@ -1,9 +1,11 @@
 package com.example.supportdesk.service;
 
+import com.example.supportdesk.dto.CreateTicketRequest;
 import com.example.supportdesk.dto.TicketResponse;
 import com.example.supportdesk.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,5 +71,35 @@ public class TicketService {
                 .filter(ticket -> ticket.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
+    }
+
+    public TicketResponse createTicket(CreateTicketRequest request) {
+        String newId = generateNextId();
+        TicketResponse ticket = new TicketResponse(
+                newId,
+                request.getTitle(),
+                request.getDescription(),
+                request.getCategory(),
+                request.getPriority(),
+                "OPEN",
+                request.getCreatedBy(),
+                LocalDate.now().toString()
+        );
+        tickets.add(ticket);
+        return ticket;
+    }
+
+    private String generateNextId() {
+        int maxNum = 0;
+        for (TicketResponse ticket : tickets) {
+            String id = ticket.getId();
+            if (id.startsWith("T")) {
+                int num = Integer.parseInt(id.substring(1));
+                if (num > maxNum) {
+                    maxNum = num;
+                }
+            }
+        }
+        return String.format("T%03d", maxNum + 1);
     }
 }
